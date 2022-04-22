@@ -10,9 +10,15 @@ public class Ball : MonoBehaviour
     CircleCollider2D circleCollider;
     GameObject lastObjectHit;
 
+    GameController gameController;
+
+    public AudioClip OnWallHitAudio;
+    public AudioClip OnPaddleHitAudio;
+
     private void Awake()
     {
         circleCollider = GetComponent<CircleCollider2D>();
+        gameController = FindObjectOfType<GameController>();
     }
 
     void Update()
@@ -37,18 +43,22 @@ public class Ball : MonoBehaviour
                 if (hit.transform.GetComponent<Paddle>())
                 {
                     Velocity.y = Mathf.Abs(Velocity.y);
+                    gameController.AudioController.PlayClip(OnPaddleHitAudio);
                 }
 
                 if (hit.transform.GetComponent<Block>())
                 {
                     hit.transform.GetComponent<Block>().OnHit();
                 }
+
+                gameController.AudioController.PlayClip(OnWallHitAudio);
             }
         }
 
         if(transform.position.y < -Camera.main.orthographicSize)
         {
-            FindObjectOfType<GameController>().BallLost();
+            gameController.BallLost();
+            lastObjectHit = null;
         }
     }
 

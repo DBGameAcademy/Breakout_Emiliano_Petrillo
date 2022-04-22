@@ -7,15 +7,22 @@ public class GameController : MonoBehaviour
     public int Score = 0;
 
     public UIController UIController;
+    public AudioController AudioController;
+    public BlockController BlockController;
 
     public Ball Ball;
 
     public Vector3 BallResetPosition;
 
+    public GameObject ExplosionPrefab;
+
     public int Lives = 3;
+    public int InitialLives = 3;
 
     private bool isPlaying = false;
+    public bool IsPlaying { get { return isPlaying; } }
     private bool isPaused = false;
+    public bool IsPaused { get { return isPaused; } }
 
     public void Start()
     {
@@ -23,18 +30,6 @@ public class GameController : MonoBehaviour
         UIController.UpdateLives(Lives);
 
         PauseGame();
-    }
-
-    private void Update()
-    {
-        if(!isPaused && Input.GetKeyDown(KeyCode.Escape))
-        {
-            PauseGame();
-        }
-        else if(isPaused && Input.anyKeyDown)
-        {
-            UnpauseGame();
-        }
     }
 
     public void AddScore(int _value)
@@ -56,7 +51,6 @@ public class GameController : MonoBehaviour
         UIController.UpdateLives(Lives);
         if (Lives < 0)
         {
-            Debug.Log("game lost");
             GameOver();
         }
     }
@@ -77,12 +71,13 @@ public class GameController : MonoBehaviour
 
     public void ResetGame()
     {
-        Lives = 3;
+        Lives = InitialLives;
         Score = 0;
         UIController.UpdateScoreText(Score);
         UIController.UpdateLives(Lives);
         UIController.HideGameOver();
         UIController.HideStartGamePanel();
+        BlockController.ResetBlocks();
     }
 
     public void PauseGame()

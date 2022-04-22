@@ -11,20 +11,8 @@ public class Paddle : MonoBehaviour
         
     }
 
-    void Update()
+    public void Move(Vector2 _direction)
     {
-        Move();
-    }
-
-    public void Move()
-    {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            transform.Translate(Vector2.left * v * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            transform.Translate(Vector2.right * v * Time.deltaTime);
-        }
+        transform.Translate(_direction * v * Time.deltaTime);
     }
 }
